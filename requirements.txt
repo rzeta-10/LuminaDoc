@@ -4,3 +4,6 @@ sentence-transformers
 streamlit 
 pymupdf 
 langchain-community
+langchain
+langchain-ollama
+httpx
