@@ -4,6 +4,10 @@ LuminaDoc is a powerful, privacy-focused document analysis tool that brings **RA
 
 ---
 
+<div align="center">
+  <img src="https://github.com/rzeta-10/LuminaDoc/blob/main/demo.gif" alt="Demo">
+</div>
+
 ## 📚 **Key Features**  
 
 - **100% Offline Processing:** Your documents never leave your machine.  
