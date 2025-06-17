@@ -1,4 +1,4 @@
-# 🚀 **LuminaDoc: Your Offline Document Intelligence Hub** 🔍📚  
+# 🚀 **LuminaDoc: Your Offline Document Intelligence Hub** 🔍
 
 LuminaDoc is a powerful, privacy-focused document analysis tool that brings **RAG (Retrieval-Augmented Generation)** capabilities to your local environment. Process, analyze, and interact with your documents using advanced **LLMs**—all without requiring an internet connection.
 
