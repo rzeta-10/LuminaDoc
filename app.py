@@ -57,7 +57,12 @@ class OllamaEmbeddingFunction(EmbeddingFunction):
 
 # Process the Uploaded Document
 def process_document(uploaded_file: UploadedFile) -> list[Document]:
-    temp_file = tempfile.NamedTemporaryFile("wb", suffix=".pdf", delete=False)
+    # Determine file extension and set suffix accordingly
+    file_ext = os.path.splitext(uploaded_file.name)[1].lower()
+    if file_ext in [".pdf", ".docx", ".txt", ".csv", ".xlsx"]:
+        temp_file = tempfile.NamedTemporaryFile("wb", suffix=file_ext, delete=False)
+    else:
+        raise ValueError(f"Unsupported file type: {file_ext}")
     temp_file.write(uploaded_file.read())
     temp_file.close()
 
@@ -117,33 +122,60 @@ def main():
     st.set_page_config(page_title="RAG Q&A", page_icon="🧠")
     st.sidebar.header("RAG Q&A")
 
-    uploaded_file = st.sidebar.file_uploader(
-        "Upload PDF File", type=["pdf"], accept_multiple_files=False
+    st.sidebar.info(
+        """
+        **Upload your documents**
+        
+        Supported formats: PDF, DOCX, TXT, CSV, XLSX
+        
+        You can select multiple files.
+        
+        _Need support for another format? Let us know!_
+        """
     )
 
-    process = st.sidebar.button("Process")
+    uploaded_files = st.sidebar.file_uploader(
+        "Upload File(s)", type=["pdf","docx","csv","txt","xlsx"], accept_multiple_files=True
+    )
 
-    if process and uploaded_file:
-        normalized_file_name = uploaded_file.name.translate(
-            str.maketrans({"-": "_", " ": "_", ".": "_", "(": "_", ")": "_"})
-        )
-        st.info("Processing document...")
-        all_splits = process_document(uploaded_file)
-        add_to_collection(all_splits, normalized_file_name)
-        st.success("Document processing completed!")
+    process = st.sidebar.button("Process Document(s)")
+
+    if process and uploaded_files:
+        for uploaded_file in uploaded_files:
+            normalized_file_name = uploaded_file.name.translate(
+                str.maketrans({"-": "_", " ": "_", ".": "_", "(": "_", ")": "_"})
+            )
+            with st.spinner(f"Processing {uploaded_file.name}..."):
+                all_splits = process_document(uploaded_file)
+                add_to_collection(all_splits, normalized_file_name)
+        st.sidebar.success("All documents processed!")
+
+    st.title("RAG Q&A Document Assistant")
+    st.info(
+        """
+        **How to use:**
+        1. Upload one or more documents using the sidebar.
+        2. Click **Process Document(s)**.
+        3. Ask questions about your documents below.
+        
+        Supported formats: PDF, DOCX, TXT, CSV, XLSX
+        
+        _Need another format? Request it in the feedback!_
+        """
+    )
 
     st.header("Ask a Question")
-    prompt = st.text_area("Ask a question related to document")
+    prompt = st.text_area("Ask a question related to your documents")
     ask = st.button("Ask")
 
     if ask and prompt:
         results = query_collection(prompt)
         context = results.get("documents")[0]
-        relevant_text, relevant_text_ids = re_rank_cross_encoder(prompt,context)
+        relevant_text, relevant_text_ids = re_rank_cross_encoder(prompt, context)
         response = call_llm(context=relevant_text, prompt=prompt)
         st.write_stream(response)
     
-        with st.expander("See retrived documents"):
+        with st.expander("See retrieved documents"):
             st.write(results)
         
         with st.expander("See relevant text"):

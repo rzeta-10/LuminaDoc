@@ -13,10 +13,12 @@ LuminaDoc is a powerful, privacy-focused document analysis tool that brings **RA
 - **100% Offline Processing:** Your documents never leave your machine.  
 - **Built-in RAG Pipeline:** Advanced retrieval and generation workflows.  
 - **Local Vector Storage:** Supports **ChromaDB** for efficient retrieval.  
-- **Format Support:** PDF.  
+- **Format Support:** PDF, DOCX, TXT, CSV, XLSX.  
 - **Intelligent Chunking:** Semantic search with precise document splitting.  
 - **Conversational Interface:** Ask questions, get contextual answers.  
 - **Custom Knowledge Base:** Build and manage your knowledge repositories.  
+- **Multi-file Upload:** Upload and process multiple documents at once.  
+- **Simple Streamlit UI:** Clean, native Streamlit interface—no HTML required.  
 
 ---
 
@@ -148,12 +150,13 @@ Open this in your browser.
 
 ## 🚀 **Using LuminaDoc**
 
-1. **Upload a Document:**  
-   - In the sidebar, upload a **PDF** file.  
-   - Click on the **Process** button.  
+1. **Upload Documents:**  
+   - In the sidebar, upload one or more documents (**PDF, DOCX, TXT, CSV, XLSX**).  
+   - Click on the **Process Document(s)** button.  
+   - Need another format? Request it in the feedback!
    
 2. **Ask Questions:**  
-   - Enter your question in the **text area**.  
+   - Enter your question in the **Ask a Question** text area.  
    - Click **Ask** to retrieve relevant information.  
 
 3. **View Results:**  
